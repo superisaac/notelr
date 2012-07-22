@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block extra_header %}
+<link rel="alternate" href="/{{ puser.username }}.rss" type="application/rss+xml" ></link>
+{% endblock %}
+{% block page_title %}{{ puser.username }}'s blog -{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span9 first">
+      <ul class="breadcrumb">
+	<li>
+	  <a href="/">Home</a> <span class="divider">/</span>
+	</li>
+	<li>
+	  {{ puser.username }}
+	</li>
+      </ul>
+      {% if paged.object_list %}
+      {% for note in paged.object_list %}
+      <div class="well">
+	<h2>{{ note.title }}</h2>
+	<div>
+	  {{ note.get_html_content|safe }}
+	</div>
+	<div>
+	  <span class="pull-right"><a href="{% url blog_item note_id=note.guid %}">Read more »</a></span>
+	  <span>{{ note.date_created|date:"jS F Y H:i" }} by <a href="/{{ puser.username }}">{{ puser.username }}</a></span>
+	</div>
+      </div>
+      {% endfor %}
+      <ul class="pager">
+	{% if paged.has_previous %}
+	<li><a href="?page={{ paged.previous_page_number }}">&larr; Prev page</a></li>
+	{% endif %}
+	{% if paged.has_next %}
+	<li><a href="?page={{ paged.next_page_number }}">Next page &rarr;</a></li>
+	{% endif %}
+      </ul>
+      {% else %}
+      <div class="well">
+	<h2>No blogs</h2>
+      </div>
+      {% endif %}
+    </div>
+    <div class="span3 well">
+      <ul class="nav nav-list">
+	<li class="nav-header">Categories</li>
+	<li {% if not curr_nb %} class="active"{% endif %}><a href="/{{ puser.username }}">All blogs of {{ puser.username }}</a></li>
+	{% for notebook in notebooks %}
+	<li {% if notebook == curr_nb %} class="active"{% endif %}>
+	  <a href="{{ notebook.get_absolute_url }}">
+	    {{ notebook.name }} ({{ notebook.cnt_note }})
+	  </a>
+	</li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock content %}

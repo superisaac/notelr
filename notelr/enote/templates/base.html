@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <meta name="keywords" content="evernote,blog,note,notebook,notetaking,note2share"></meta>
+    <title>{% block page_title %}-{% endblock %} Note2share</title>
+
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" type="text/css" />
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 60px;
+      }
+    </style>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.css" type="text/css" />
+    {% block extra_header %}{% endblock %}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-33366792-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+	<div class="container-fluid">
+	  <a class="brand" href="/">NOTE2SHARE</a>
+	  {% if request.user.is_authenticated %}
+	  <div class="btn-group pull-right">
+	    <a class="btn dropdown-toggle" data-toggle="dropdown">
+	      <i class="icon-user"></i>
+	      {{ request.user.username }}
+	    <span class="caret"></span>
+	    </a>
+	    <ul class="dropdown-menu">
+	      <li><a href="#">Profile (TODO)</a></li>
+	      <li class="divider"></li>
+	      <li><a onclick="if(!confirm('Are you sure?')) { return false;}" href="/auth/logout">Logout</a></li>
+	    </ul>	    
+	  </div>
+	  {% endif %}
+
+	  <div class="nav-collapse">
+	    <ul class="nav">
+	      {% if request.user.is_authenticated %}
+	      <li{% if pagename == request.user.username %} class="active"{% endif %}>
+		<a href="/{{ request.user.username }}">My blog</a>
+	      </li>
+	      {% else %}
+	      <li>
+		<a class="pull-right" href="/auth">Connect evernote</a>
+	      </li>
+	      {% endif %}
+	    </ul>
+	  </div>
+	</div> <!-- endof .container -->
+
+      </div>
+    </div> <!-- End of .navbar -->
+    {% block content %}
+    {% endblock content %}
+
+    <script src="/static/js/jquery-1.7.2.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+    <script>
+      $(".dropdown-toggle").dropdown();
+      $(document).ready(function () {
+         });
+    </script>
+  </body>
+</html>

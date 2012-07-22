@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block page_title %} All stuffs -{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span9">
+      {% for note in paged.object_list %}
+      <div class="well">
+	<h2>{{ note.title }}</h2>
+	<div>
+	  {{ note.get_html_content|safe }}
+	</div>
+	<div>
+	  <span class="pull-right"><a href="{% url blog_item note_id=note.guid %}">Read more »</a></span>
+	  <span>{{ note.date_created|date:"jS F Y H:i" }} by <a href="/{{ note.user.username }}">{{ note.user.username }}</a></span>
+	</div>
+      </div>
+      {% endfor %}
+      <ul class="pager">
+	{% if paged.has_previous %}
+	<li><a href="?page={{ paged.previous_page_number }}">&larr; Prev page</a></li>
+	{% endif %}
+	{% if paged.has_next %}
+	<li><a href="?page={{ paged.next_page_number }}">Next page &rarr;</a></li>
+	{% endif %}
+      </ul>
+    </div>
+
+    <div class="span3 well">
+      <h3>What is note2share?</h3>
+      <p>Note2share is a light weight blog system to publish blog using
+	 <a href="http://evernote.com">evernote</a>.</p>
+      <h3>How to post blogs?</h3>
+      <p>Two steps to setup a blog.</p>
+      <ol>
+	<li><a href="/auth">Grant</a> us the privileges to access your
+	evernote account.</li>
+	<li>Write a note, give it a tag "note2share". We will collect
+	all notes tagged "note2share" to make them blog posts.</li>
+      </ol>
+      <p>Once you want to remove a blog post, simply add a new tag
+      "hide" from the corresponding note in evernote, then we'll hide
+      the blog. You can remove both "note2share" and "hide" tags
+      later.</p>
+
+      <h3>Why note2share?</h3>
+      <ul>
+	<li>With note2share you can write blogs everywhere(evernote
+	supports many desktops and mobile devices).</li>
+	<li>Since you data is persistent within evernote, you don't
+	have to worry about how to maintain, copy and backup it.</li>
+      </ul>
+    </div>
+  </div>
+</div> 
+{% endblock content %}

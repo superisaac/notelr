@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block extra_header %}
+<link rel="alternate" href="/{{ note.user.username }}.rss" type="application/rss+xml" ></link>
+{% endblock %}
+{% block page_title %}{{ note.title }} -{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span9 first">
+      <ul class="breadcrumb">
+	<li>
+	  <a href="/">Home</a> <span class="divider">/</span>
+	</li>
+	<li>
+	  <a href="/{{ note.user.username }}">{{ note.user.username }}</a> <span class="divider">/</span>
+	</li>
+	<li>
+	  {{ note.title }}
+	</li>
+      </ul>
+      <div class="well">
+	<h2>{{ note.title }}</h2>
+	<div>
+	  {{ note.get_html_content|safe }}
+	</div>
+	<div>
+	  <span>{{ note.date_created|date:"jS F Y H:i" }} by <a href="/{{ note.user.username }}">{{ note.user.username }}</a></span>
+	</div>
+      </div>
+    </div>
+
+    <div class="span3 well">
+      <ul class="nav nav-list">
+	<li class="nav-header">Categories</li>
+	<li><a href="/{{ note.user.username }}">All blogs of {{ note.user.username }}</a></li>
+	{% for notebook in notebooks %}
+	<li>
+	  <a href="{{ notebook.get_absolute_url }}">
+	    {{ notebook.name }} ({{ notebook.cnt_note }})
+	  </a>
+	</li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock content %}

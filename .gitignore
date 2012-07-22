@@ -1,4 +1,7 @@
 *.py[co]
+local_settings.py
+setup-env.sh
+db.sqlite3
 
 # Packages
 *.egg
